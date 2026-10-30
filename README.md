@@ -134,7 +134,7 @@ O painel pode apoiar uma conversa inicial entre analista, gestor e investidor so
 
 ## 11. Demonstração do Data App
 
-- **Aplicação em produção:** `PREENCHER COM O LINK PÚBLICO DO STREAMLIT COMMUNITY CLOUD`
+- **Aplicação em produção:** [Carteira em Foco](https://carteira-em-foco-b3.streamlit.app/)
 - **Capturas de tela:** adicionar imagens do painel em `docs/screenshots/` e referenciá-las aqui.
 
 ### Navegação
