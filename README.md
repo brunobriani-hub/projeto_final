@@ -187,7 +187,7 @@ projeto_final/
 ## 14. Gestão ágil e links do projeto
 
 - **Quadro Kanban público no Trello:** [Projeto Final BI Financeiro — B3](https://trello.com/b/FLVBrrQi/projeto-final-bi-financeiro-b3)
-- **Captura do quadro:**
+- **Captura do quadro:** `docs/trello_quadro.png`
 
 ![Quadro Kanban do projeto](docs/trello_quadro.png)
 
