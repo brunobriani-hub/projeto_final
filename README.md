@@ -193,9 +193,9 @@ projeto_final/
 ![Quadro Kanban do projeto](docs/trello_quadro.png)
 ```
 
-- **Aplicação Streamlit:** `PREENCHER COM O LINK DO APP`
+- **Aplicação Streamlit:** [Carteira em Foco](https://carteira-em-foco-b3.streamlit.app/)
 - **Vídeo de apresentação (3–5 minutos):** `PREENCHER COM O LINK DO VÍDEO`
-- **Repositório GitHub:** https://github.com/brunobriani-hub/projeto_final
+- **Repositório GitHub:** [projeto_final](https://github.com/brunobriani-hub/projeto_final)
 
 ## 15. Autoria e referências
 
