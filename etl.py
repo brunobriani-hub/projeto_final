@@ -112,3 +112,80 @@ print("\nDuplicatas de data e ativo:",
 
 print("\nValores ausentes por coluna:")
 print(df_b3.isna().sum())
+
+# Indicadores diários por ativo
+df_analise = df_b3.copy()
+df_analise.columns.name = None
+df_analise = df_analise.sort_values(["ticker", "data"]).reset_index(drop=True)
+
+grupo_preco = df_analise.groupby("ticker")["fechamento_ajustado"]
+
+df_analise["retorno_diario"] = grupo_preco.pct_change()
+
+preco_inicial = grupo_preco.transform("first")
+df_analise["base_100"] = (
+    df_analise["fechamento_ajustado"] / preco_inicial * 100
+)
+
+df_analise["sma_21"] = grupo_preco.transform(
+    lambda serie: serie.rolling(21, min_periods=21).mean()
+)
+df_analise["sma_50"] = grupo_preco.transform(
+    lambda serie: serie.rolling(50, min_periods=50).mean()
+)
+
+df_analise["pico_historico"] = grupo_preco.transform("cummax")
+df_analise["drawdown"] = (
+    df_analise["fechamento_ajustado"] / df_analise["pico_historico"] - 1
+)
+
+# Resumo de risco e retorno
+resumo_ativos = []
+
+for ticker, grupo in df_analise.groupby("ticker"):
+    retornos = grupo["retorno_diario"].dropna()
+    desvio_diario = retornos.std()
+
+    retorno_acumulado = (
+        grupo["fechamento_ajustado"].iloc[-1]
+        / grupo["fechamento_ajustado"].iloc[0]
+        - 1
+    )
+    volatilidade_anualizada = desvio_diario * (252 ** 0.5)
+    sharpe_rf_zero = (
+        retornos.mean() / desvio_diario * (252 ** 0.5)
+        if desvio_diario != 0 else float("nan")
+    )
+
+    resumo_ativos.append({
+        "ticker": ticker,
+        "retorno_acumulado_pct": retorno_acumulado * 100,
+        "volatilidade_anualizada_pct": volatilidade_anualizada * 100,
+        "sharpe_rf_zero": sharpe_rf_zero,
+        "drawdown_maximo_pct": grupo["drawdown"].min() * 100,
+    })
+
+resumo = pd.DataFrame(resumo_ativos)
+
+df_analise.to_csv(
+    pasta_saida / "indicadores_diarios_2021_2023.csv",
+    index=False,
+    encoding="utf-8",
+)
+resumo.to_csv(
+    pasta_saida / "resumo_ativos_2021_2023.csv",
+    index=False,
+    encoding="utf-8",
+)
+
+print("\nResumo de desempenho por ativo:")
+print(resumo.sort_values("retorno_acumulado_pct", ascending=False).to_string(index=False))
+
+print(
+    "\nRetorno médio da carteira igualmente ponderada: "
+    f"{resumo['retorno_acumulado_pct'].mean():.2f}%"
+)
+print(
+    "Volatilidade anualizada média: "
+    f"{resumo['volatilidade_anualizada_pct'].mean():.2f}%"
+)
