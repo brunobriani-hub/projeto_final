@@ -186,12 +186,10 @@ projeto_final/
 
 ## 14. Gestão ágil e links do projeto
 
-- **Quadro Kanban público no Trello:** `PREENCHER COM O LINK DO QUADRO`
-- **Captura do quadro:** salvar em `docs/trello_quadro.png` e exibir abaixo.
+- **Quadro Kanban público no Trello:** [Projeto Final BI Financeiro — B3](https://trello.com/b/FLVBrrQi/projeto-final-bi-financeiro-b3)
+- **Captura do quadro:**
 
-```markdown
 ![Quadro Kanban do projeto](docs/trello_quadro.png)
-```
 
 - **Aplicação Streamlit:** [Carteira em Foco](https://carteira-em-foco-b3.streamlit.app/)
 - **Vídeo de apresentação (3–5 minutos):** `PREENCHER COM O LINK DO VÍDEO`
@@ -200,7 +198,7 @@ projeto_final/
 ## 15. Autoria e referências
 
 **Autor:** Bruno Briani de Paula  
-**LinkedIn:** `PREENCHER COM O LINK DO SEU PERFIL`
+**LinkedIn:** 'www.linkedin.com/in/bruno-briani-380b6b2a9'
 
 ### Referências técnicas e de dados
 
