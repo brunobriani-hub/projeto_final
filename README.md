@@ -198,7 +198,7 @@ projeto_final/
 ## 15. Autoria e referências
 
 **Autor:** Bruno Briani de Paula  
-**LinkedIn:** 'www.linkedin.com/in/bruno-briani-380b6b2a9'
+**LinkedIn:** [Bruno Briani](https://www.linkedin.com/in/bruno-briani-380b6b2a9/)
 
 ### Referências técnicas e de dados
 
