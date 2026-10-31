@@ -10,17 +10,24 @@ A aplicação permite filtrar ativos, grupos setoriais e datas; comparar retorno
 
 ## 2. Contexto de negócio e pergunta orientadora
 
-Um investidor ou analista precisa comparar ativos com preços, riscos e trajetórias diferentes. O painel responde à pergunta:
+Um investidor ou analista precisa comparar ativos com preços, riscos e trajetórias diferentes. Este painel investiga:
 
 **Como os 12 ativos selecionados se comportaram em retorno e risco entre 2021 e 2023, e quais diferenças aparecem entre os grupos setoriais definidos para esta análise?**
 
-Perguntas complementares:
+- **Quais ativos tiveram maior e menor retorno acumulado?**  
+  PETR4 liderou o período, com retorno aproximado de **228,69%**. BBDC4 teve o menor resultado, cerca de **−6,93%**.
 
-- Quais ativos tiveram maior e menor retorno acumulado?
-- Como variou o desempenho de cada ativo por ano?
-- Quais grupos setoriais tiveram maior retorno médio anual?
-- Quais ativos apresentaram maior associação linear em seus retornos diários?
-- Como se comportaram a volatilidade, o drawdown e as médias móveis?
+- **Como variou o desempenho de cada ativo por ano?**  
+  Os retornos e as posições relativas variaram de um ano para outro. No acumulado do período, PETR4, PRIO3 e EMBR3 se destacaram, embora suas trajetórias anuais tenham sido diferentes.
+
+- **Quais grupos setoriais tiveram maior retorno médio anual?**  
+  A liderança mudou: Indústria apresentou a maior média anual em 2021 (**92,97%**); Energia liderou em 2022 (**41,79%**) e 2023 (**55,29%**). Na média dos três anos, Energia ficou com **38,08%**, seguida de Indústria, com **36,68%**. O retorno de cada grupo é a média simples dos ativos classificados nele.
+
+- **Quais ativos apresentaram maior associação linear em seus retornos diários?**  
+  BBDC4 e ITUB4 tiveram a maior correlação de Pearson nos retornos diários (**r = 0,77**) entre janeiro de 2021 e dezembro de 2023. Isso indica movimentos historicamente semelhantes, mas não comprova causalidade.
+
+- **Como se comportaram a volatilidade, o drawdown e as médias móveis?**  
+  A volatilidade anualizada média foi de **33,61%**. EGIE3 teve o drawdown máximo menos severo (**−17,65%**) e EMBR3, o mais acentuado (**−58,27%**). As médias móveis de 21 e 50 pregões ajudam a observar mudanças de tendência, mas não são previsões de preço.
 
 ## 3. Fonte de dados, período e uso
 
@@ -115,7 +122,7 @@ Na base consolidada de 2021–2023 e com pesos iguais para os 12 ativos, os cál
 
 Os resultados são descritivos e dependem do intervalo, da fonte e das regras de cálculo adotadas. O Sharpe usa taxa livre de risco igual a zero. Não se infere causalidade a partir de correlações ou de desempenho passado.
 
-> Atualize estes números se uma nova execução do ETL alterar a base ou os resultados.
+> Os resultados apresentados correspondem à base histórica versionada neste repositório e ao período de 2021 a 2023.
 
 ## 9. Limitações da análise
 
@@ -135,7 +142,8 @@ O painel pode apoiar uma conversa inicial entre analista, gestor e investidor so
 ## 11. Demonstração do Data App
 
 - **Aplicação em produção:** [Carteira em Foco](https://carteira-em-foco-b3.streamlit.app/)
-- **Capturas de tela:** adicionar imagens do painel em `docs/screenshots/` e referenciá-las aqui.
+
+![Captura do painel Carteira em Foco](docs/captura-app-readme.png)
 
 ### Navegação
 
@@ -191,7 +199,9 @@ projeto_final/
 
 ![Quadro Kanban do projeto](docs/trello_quadro.png)
 
-- **Aplicação Streamlit:** [Carteira em Foco](https://carteira-em-foco-b3.streamlit.app/)
+
+![Captura do painel Carteira em Foco](docs/captura-app-readme.png)
+
 - **Vídeo de apresentação (3–5 minutos):** `PREENCHER COM O LINK DO VÍDEO`
 - **Repositório GitHub:** [projeto_final](https://github.com/brunobriani-hub/projeto_final)
 
