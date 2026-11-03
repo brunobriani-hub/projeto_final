@@ -90,6 +90,8 @@ A aplicação carrega a tabela por conexão PostgreSQL, se configurada, e utiliz
 | `pico_historico` | float | Maior fechamento ajustado acumulado até a data. |
 | `drawdown` | float | Variação em relação ao pico histórico: fechamento ajustado ÷ pico histórico − 1. Valores negativos representam quedas do pico. |
 
+O arquivo `data/resumo_ativos_2021_2023.csv` agrega os resultados por ativo e contém retorno acumulado, volatilidade anualizada, Sharpe com taxa livre de risco igual a zero, drawdown máximo, assimetria dos retornos diários e excesso de curtose.
+
 ### Indicadores derivados na aplicação
 
 - **Retorno acumulado no período:** preço ajustado final ÷ preço ajustado inicial − 1.
@@ -103,6 +105,8 @@ A aplicação carrega a tabela por conexão PostgreSQL, se configurada, e utiliz
 - **Retorno setorial:** média simples dos retornos anuais dos ativos disponíveis em cada grupo do projeto.
 
 - **Correlação:** coeficiente de Pearson entre retornos diários, não entre níveis de preço.
+- **Assimetria:** coeficiente de skewness calculado sobre os retornos diários; valores negativos indicam maior extensão da cauda à esquerda e valores positivos, da cauda à direita.
+- **Excesso de curtose:** curtose calculada sobre os retornos diários menos 3; valores positivos indicam caudas mais pesadas que as de uma distribuição normal de referência.
 
 ## 6. Grupos setoriais adotados
 
@@ -132,7 +136,7 @@ Esses grupos são uma simplificação para a visualização e não devem ser int
 
 ## 8. Resultados observados
 
-Na base consolidada de 2021–2023 e com pesos iguais para os 12 ativos, a análise da base consolidada apresentou os seguintes resultados:
+Na base consolidada de 2021–2023, a média simples dos retornos acumulados dos 12 ativos apresentou os seguintes resultados:
 
 - **Retorno médio acumulado dos ativos:** 58,41%.
 
@@ -142,9 +146,13 @@ Na base consolidada de 2021–2023 e com pesos iguais para os 12 ativos, a anál
 
 - **Volatilidade anualizada média:** 33,61%.
 
-- **Menor drawdown máximo em magnitude entre os ativos:** EGIE3, aproximadamente −17,65%.
+- **Maior Sharpe empírico:** PETR4, aproximadamente 1,22, com taxa livre de risco igual a zero.
 
-Os resultados são descritivos e dependem do intervalo, da fonte e das regras de cálculo adotadas. O Sharpe usa taxa livre de risco igual a zero. Não se infere causalidade a partir de correlações ou de desempenho passado.
+- **Menor drawdown máximo em magnitude entre os ativos:** EGIE3, aproximadamente −17,65%; EMBR3 teve o mais acentuado, aproximadamente −58,27%.
+
+- **Estatísticas da distribuição dos retornos:** ITUB4 apresentou o maior excesso de curtose (13,49) e a assimetria mais negativa (−1,115) entre os ativos da amostra.
+
+Os resultados são descritivos e dependem do intervalo, da fonte e das regras de cálculo adotadas. O excesso de curtose e a assimetria descrevem a distribuição observada nesta amostra; não são previsões de perdas futuras. O Sharpe usa taxa livre de risco igual a zero. Não se infere causalidade a partir de correlações ou de desempenho passado.
 
 > Os resultados apresentados correspondem à base histórica versionada neste repositório e ao período de 2021 a 2023.
 
@@ -236,7 +244,7 @@ projeto_final/
 
 ![Quadro Kanban do projeto](docs/trello_quadro.png)
 
-- **Vídeo de apresentação (3–5 minutos):** `Link pendente de publicação do vídeo`
+- **Vídeo de apresentação (3–5 minutos):** [Assistir no YouTube](https://youtu.be/2SvGqbcF1BA)
 
 - **Repositório GitHub:** [projeto_final](https://github.com/brunobriani-hub/projeto_final)
 
