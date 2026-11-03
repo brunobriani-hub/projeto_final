@@ -503,7 +503,7 @@ projeto_final/
 
 ![Quadro Kanban do projeto](docs/trello_quadro.png)
 
-- **Vídeo de apresentação (3–5 minutos):** [Assistir no Google Drive](https://drive.google.com/file/d/1HYzlxd1dXIMGwJfYi5rq1UfwyAIcoXXf/view?usp=sharing)
+- **Vídeo de apresentação (3–5 minutos):** [Assistir no YouTube](https://youtu.be/2SvGqbcF1BA)
 
 - **Repositório GitHub:** [projeto_final](https://github.com/brunobriani-hub/projeto_final)
 
