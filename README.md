@@ -10,40 +10,62 @@ A aplicação permite filtrar ativos, grupos setoriais e datas; comparar retorno
 
 ## 2. Contexto de negócio e pergunta orientadora
 
-Um investidor ou analista precisa comparar ativos com preços, riscos e trajetórias diferentes. O painel responde à pergunta:
+Um investidor ou analista precisa comparar ativos com preços, riscos e trajetórias diferentes. Este painel investiga:
 
 **Como os 12 ativos selecionados se comportaram em retorno e risco entre 2021 e 2023, e quais diferenças aparecem entre os grupos setoriais definidos para esta análise?**
 
-Perguntas complementares:
+- **Quais ativos tiveram maior e menor retorno acumulado?**  
 
-- Quais ativos tiveram maior e menor retorno acumulado?
-- Como variou o desempenho de cada ativo por ano?
-- Quais grupos setoriais tiveram maior retorno médio anual?
-- Quais ativos apresentaram maior associação linear em seus retornos diários?
-- Como se comportaram a volatilidade, o drawdown e as médias móveis?
+  PETR4 liderou o período, com retorno aproximado de **228,69%**. BBDC4 teve o menor resultado, cerca de **−6,93%**.
+
+- **Como variou o desempenho de cada ativo por ano?**  
+
+  Os retornos e as posições relativas variaram de um ano para outro. No acumulado do período, PETR4, PRIO3 e EMBR3 se destacaram, embora suas trajetórias anuais tenham sido diferentes.
+
+- **Quais grupos setoriais tiveram maior retorno médio anual?**  
+
+  A liderança mudou: Indústria apresentou a maior média anual em 2021 (**92,97%**); Energia liderou em 2022 (**41,79%**) e 2023 (**55,29%**). Na média dos três anos, Energia ficou com **38,08%**, seguida de Indústria, com **36,68%**. O retorno de cada grupo é a média simples dos ativos classificados nele.
+
+- **Quais ativos apresentaram maior associação linear em seus retornos diários?**  
+
+  BBDC4 e ITUB4 tiveram a maior correlação de Pearson nos retornos diários (**r = 0,77**) entre janeiro de 2021 e dezembro de 2023. Isso indica movimentos historicamente semelhantes, mas não comprova causalidade.
+
+- **Como se comportaram a volatilidade, o drawdown e as médias móveis?**  
+
+  A volatilidade anualizada média foi de **33,61%**. EGIE3 teve o drawdown máximo menos severo (**−17,65%**) e EMBR3, o mais acentuado (**−58,27%**). As médias móveis de 21 e 50 pregões ajudam a observar mudanças de tendência, mas não são previsões de preço.
 
 ## 3. Fonte de dados, período e uso
 
 - **Fonte consultada:** histórico público de mercado disponibilizado pelo Yahoo Finance, obtido em Python pela biblioteca `yfinance`, com símbolos de ações brasileiras.
+
 - **Janela definida:** 01/01/2021 a 31/12/2023.
+
 - **Pregões encontrados na base:** 04/01/2021 a 28/12/2023, correspondentes aos pregões disponíveis no intervalo.
+
 - **Universo:** ABEV3, BBDC4, EGIE3, EMBR3, GGBR4, ITUB4, KLBN11, PETR4, PRIO3, RENT3, VALE3 e WEGE3.
+
 - **Volume da base:** 745 observações por ativo, totalizando 8.940 linhas na série consolidada.
+
 - **Arquivos principais:** `data/precos_acoes_2021_2023.csv` e `data/indicadores_diarios_2021_2023.csv`.
 
 A fonte utilizada é uma API pública de cotações, conforme permitido para a Linha 2 no enunciado. Ela não é apresentada como uma extração direta dos arquivos oficiais da B3. Consulte os termos aplicáveis da fonte antes de reutilizar ou redistribuir os dados.
 
-**Observação sobre o ticker EMBR3:** a identificação do ativo pode diferir na fonte de cotações em razão de mudanças de símbolo. O pipeline padroniza o nome exibido no recorte histórico como `EMBR3`; essa regra deve ser mantida documentada junto à extração.
+**Observação sobre o ticker EMBR3:** a identificação do ativo pode diferir na fonte de cotações em razão de mudanças de símbolo. No ETL, o símbolo `EMBJ3.SA` é padronizado como `EMBR3` para manter a identificação adotada no projeto.
 
 ## 4. Pipeline de engenharia de dados
 
 O script `etl.py` realiza a extração e preparação da série histórica. O fluxo geral é:
 
 1. Consulta os dados históricos dos ativos por meio de `yfinance`.
+
 2. Padroniza os campos de preço, volume, data e ticker.
+
 3. Converte datas para tipo datetime e campos financeiros para tipos numéricos.
+
 4. Remove registros inválidos e duplicados por data e ativo.
+
 5. Ordena a base por ativo e data e verifica cobertura, nulos e duplicatas.
+
 6. Calcula indicadores derivados e grava os arquivos CSV na pasta `data/` usando caminhos relativos ao projeto.
 
 A aplicação carrega a tabela por conexão PostgreSQL, se configurada, e utiliza o CSV versionado como contingência. O carregamento é armazenado em cache por uma hora com `st.cache_data`.
@@ -71,10 +93,15 @@ A aplicação carrega a tabela por conexão PostgreSQL, se configurada, e utiliz
 ### Indicadores derivados na aplicação
 
 - **Retorno acumulado no período:** preço ajustado final ÷ preço ajustado inicial − 1.
+
 - **Volatilidade anualizada:** desvio-padrão dos retornos diários × √252.
+
 - **Sharpe empírico:** retorno médio diário ÷ desvio-padrão diário × √252, assumindo taxa livre de risco igual a zero.
+
 - **Retorno anual por ativo:** variação entre o primeiro e o último pregão disponível daquele ano no intervalo filtrado.
+
 - **Retorno setorial:** média simples dos retornos anuais dos ativos disponíveis em cada grupo do projeto.
+
 - **Correlação:** coeficiente de Pearson entre retornos diários, não entre níveis de preço.
 
 ## 6. Grupos setoriais adotados
@@ -105,27 +132,38 @@ Esses grupos são uma simplificação para a visualização e não devem ser int
 
 ## 8. Resultados observados
 
-Na base consolidada de 2021–2023 e com pesos iguais para os 12 ativos, os cálculos preliminares do pipeline apontaram:
+Na base consolidada de 2021–2023 e com pesos iguais para os 12 ativos, a análise da base consolidada apresentou os seguintes resultados:
 
 - **Retorno médio acumulado dos ativos:** 58,41%.
+
 - **Maior retorno acumulado:** PETR4, aproximadamente 228,69%.
+
 - **Menor retorno acumulado:** BBDC4, aproximadamente −6,93%.
+
 - **Volatilidade anualizada média:** 33,61%.
+
 - **Menor drawdown máximo em magnitude entre os ativos:** EGIE3, aproximadamente −17,65%.
 
 Os resultados são descritivos e dependem do intervalo, da fonte e das regras de cálculo adotadas. O Sharpe usa taxa livre de risco igual a zero. Não se infere causalidade a partir de correlações ou de desempenho passado.
 
-> Atualize estes números se uma nova execução do ETL alterar a base ou os resultados.
+> Os resultados apresentados correspondem à base histórica versionada neste repositório e ao período de 2021 a 2023.
 
 ## 9. Limitações da análise
 
 - A janela cobre três anos e não representa todos os ciclos de mercado.
+
 - A fonte é uma base pública consolidada de cotações; diferenças de cobertura, ajustes e disponibilidade podem ocorrer.
+
 - O volume financeiro foi estimado por fechamento × quantidade de ações e não representa o valor oficial negociado.
+
 - O Sharpe considera taxa livre de risco igual a zero, simplificação que pode alterar a comparação de risco-retorno.
+
 - A média simples dá o mesmo peso a cada ativo e não reproduz necessariamente a composição de uma carteira real.
+
 - Os grupos setoriais são simplificações do projeto e contêm quantidades diferentes de ativos.
+
 - Correlação linear mede associação histórica entre retornos e não comprova causalidade nem garante comportamento futuro.
+
 - O retorno anual apresentado usa primeiro e último pregão disponível dentro do ano e do período selecionado; filtros de datas podem produzir anos parciais.
 
 ## 10. Aplicação prática
@@ -135,14 +173,19 @@ O painel pode apoiar uma conversa inicial entre analista, gestor e investidor so
 ## 11. Demonstração do Data App
 
 - **Aplicação em produção:** [Carteira em Foco](https://carteira-em-foco-b3.streamlit.app/)
-- **Capturas de tela:** adicionar imagens do painel em `docs/screenshots/` e referenciá-las aqui.
+
+![Captura do painel Carteira em Foco](docs/captura-app-readme.png)
 
 ### Navegação
 
 - **Visão geral:** Base 100 e relação risco-retorno.
+
 - **Retorno anual e setores:** retornos por ativo e média por grupo setorial.
+
 - **Risco e correlação:** correlação de Pearson, distribuição dos retornos e drawdown.
+
 - **Tendência:** preço ajustado e médias móveis simples de 21 e 50 pregões.
+
 - **Dados:** tabela filtrada e exportação CSV.
 
 Filtros por grupo setorial, ativos e período ficam na barra lateral. O botão **Restaurar filtros** retorna à carteira completa.
@@ -169,14 +212,15 @@ Para habilitar PostgreSQL, configure as credenciais localmente em `.streamlit/se
 ```text
 projeto_final/
 ├── .streamlit/
-│   ├── config.toml
-│   └── secrets.toml          # local, não versionar
+│   ├── config.toml
+│   └── secrets.toml          # local, não versionar
 ├── data/
-│   ├── indicadores_diarios_2021_2023.csv
-│   ├── precos_acoes_2021_2023.csv
-│   └── resumo_ativos_2021_2023.csv
+│   ├── indicadores_diarios_2021_2023.csv
+│   ├── precos_acoes_2021_2023.csv
+│   └── resumo_ativos_2021_2023.csv
 ├── docs/
-│   └── screenshots/
+│   ├── trello_quadro.png
+│   └── captura-app-readme.png
 ├── app.py
 ├── etl.py
 ├── requirements.txt
@@ -187,24 +231,29 @@ projeto_final/
 ## 14. Gestão ágil e links do projeto
 
 - **Quadro Kanban público no Trello:** [Projeto Final BI Financeiro — B3](https://trello.com/b/FLVBrrQi/projeto-final-bi-financeiro-b3)
+
 - **Captura do quadro:** `docs/trello_quadro.png`
 
 ![Quadro Kanban do projeto](docs/trello_quadro.png)
 
-- **Aplicação Streamlit:** [Carteira em Foco](https://carteira-em-foco-b3.streamlit.app/)
-- **Vídeo de apresentação (3–5 minutos):** `PREENCHER COM O LINK DO VÍDEO`
+- **Vídeo de apresentação (3–5 minutos):** `Link pendente de publicação do vídeo`
+
 - **Repositório GitHub:** [projeto_final](https://github.com/brunobriani-hub/projeto_final)
 
 ## 15. Autoria e referências
 
-**Autor:** Bruno Briani de Paula  
+**Autor:** Bruno Briani de Paula  
+
 **LinkedIn:** [Bruno Briani](https://www.linkedin.com/in/bruno-briani-380b6b2a9/)
 
 ### Referências técnicas e de dados
 
 - Yahoo Finance: https://finance.yahoo.com/
-- Biblioteca yfinance: https://github.com/ranaroussi/yfinance
-- Documentação Streamlit: https://docs.streamlit.io/
-- Plotly Express: https://plotly.com/python/plotly-express/
-- Pandas: https://pandas.pydata.org/docs/
 
+- Biblioteca yfinance: https://github.com/ranaroussi/yfinance
+
+- Documentação Streamlit: https://docs.streamlit.io/
+
+- Plotly Express: https://plotly.com/python/plotly-express/
+
+- Pandas: https://pandas.pydata.org/docs/
